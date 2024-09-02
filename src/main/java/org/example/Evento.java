@@ -34,6 +34,15 @@ public class Evento {
 
     public int aforoDisponible(String sala) {
         int ocupadas = 0;
+        for (String[] persona : matrizEventos) {
+            if (persona[4] != null && persona[4].equals("True") && persona[2].equals(sala)) {
+                ocupadas++;
+                if (sala.equals("VIP")) {
+                    ocupadas += Integer.parseInt(persona[3]);
+                }
+            }
+        }
+
         if (sala.equals("VIP")) {
             return aforoVIP - ocupadas;
         } else {
