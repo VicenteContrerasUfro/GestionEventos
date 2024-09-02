@@ -2,6 +2,8 @@ package org.example;
 
 public class Evento {
     public String[][] matrizEventos;
+    private final int aforoVIP = 10;
+    private final int aforoGeneral = 10;
 
     public Evento() {
         this.matrizEventos = new String[10][5];
@@ -10,20 +12,18 @@ public class Evento {
         matrizEventos[2] = new String[]{"Carlos Diaz", "17", "False", "0", "False"};
         matrizEventos[3] = new String[]{"Vicente Torres", "30", "General", "0", "False"};
         matrizEventos[4] = new String[]{"Luis Perez", "25", "VIP", "2", "False"};
+
     }
 
-    // 1
     public boolean verificarEdad(int fila) {
         int edad = Integer.parseInt(matrizEventos[fila][1]);
         return edad >= 18;
     }
 
-    // 2
     public String verificarBoleto(int fila) {
         return matrizEventos[fila][2];
     }
 
-    // 3
     public boolean validarInvitados(int fila) {
         if (matrizEventos[fila][2].equals("VIP")) {
             int invitados = Integer.parseInt(matrizEventos[fila][3]);
@@ -32,19 +32,19 @@ public class Evento {
         return true;
     }
 
-    // 4
     public int aforoDisponible(String sala) {
-        int aforoMaximo = 10;
         int ocupadas = 0;
-        return aforoMaximo - ocupadas;
+        if (sala.equals("VIP")) {
+            return aforoVIP - ocupadas;
+        } else {
+            return aforoGeneral - ocupadas;
+        }
     }
 
-    // 5
     public void ingresarPersona(int fila) {
         matrizEventos[fila][4] = "True";
     }
 
-    // 6
     public boolean permitirEntrada(int fila) {
         if (!verificarEdad(fila)) {
             return false;
@@ -62,26 +62,20 @@ public class Evento {
             return false;
         }
 
-        if (tipoEntrada.equals("VIP")) {
-            if (!validarInvitados(fila)) {
-                return false;
-            }
+        if (tipoEntrada.equals("VIP") && !validarInvitados(fila)) {
+            return false;
         }
 
         ingresarPersona(fila);
         return true;
     }
 
-    // 7
     public void removerPersona(int fila) {
         if (matrizEventos[fila][2].equals("VIP")) {
             int invitados = Integer.parseInt(matrizEventos[fila][3]);
-            for (int i = 0; i <= invitados; i++) {
-                matrizEventos[fila + i][4] = "False";
-            }
+            matrizEventos[fila][4] = "False";
         } else {
             matrizEventos[fila][4] = "False";
         }
     }
-
 }
